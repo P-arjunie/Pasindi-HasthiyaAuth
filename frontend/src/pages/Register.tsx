@@ -3,8 +3,13 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
+type AuthContextType = {
+  register: (form: { full_name: string; email: string; password: string }) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+};
+
 export default function Register() {
-  const auth = useContext(AuthContext)!;
+  const auth = useContext(AuthContext) as AuthContextType;
   const navigate = useNavigate();
   const [form, setForm] = useState({ full_name: '', email: '', password: '' });
   const [error, setError] = useState<string | null>(null);

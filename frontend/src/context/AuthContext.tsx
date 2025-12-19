@@ -1,17 +1,6 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
-type User = { id: number; full_name: string; email: string; created_at?: string } | null;
-
-type AuthContextType = {
-  user: User;
-  token: string | null;
-  login: (email: string, password: string) => Promise<void>;
-  register: (data: { full_name: string; email: string; password: string }) => Promise<void>;
-  logout: () => void;
-};
-
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { AuthContext, type User } from './authContext';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }>= ({ children }) => {
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'));
@@ -25,7 +14,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }>= ({ children 
         .catch(() => { setUser(null); setToken(null); localStorage.removeItem('token'); });
     } else {
       localStorage.removeItem('token');
-      setUser(null);
     }
   }, [token]);
 
@@ -46,3 +34,5 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }>= ({ children 
     </AuthContext.Provider>
   );
 };
+export { AuthContext };
+

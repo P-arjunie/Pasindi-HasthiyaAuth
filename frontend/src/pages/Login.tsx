@@ -17,8 +17,12 @@ export default function Login() {
     try {
       await auth.login(email, password);
       navigate('/profile');
-    } catch (err: any) {
-      setError(err?.response?.data?.error || 'Login failed');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || 'Login failed');
+      } else {
+        setError('Login failed');
+      }
     } finally {
       setLoading(false);
     }

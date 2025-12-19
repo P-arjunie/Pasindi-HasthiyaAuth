@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { AuthContext, type User } from './authContext';
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }>= ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'));
   const [user, setUser] = useState<User>(null);
 
@@ -14,6 +14,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }>= ({ children 
         .catch(() => { setUser(null); setToken(null); localStorage.removeItem('token'); });
     } else {
       localStorage.removeItem('token');
+      setUser(null);
     }
   }, [token]);
 
@@ -34,5 +35,3 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }>= ({ children 
     </AuthContext.Provider>
   );
 };
-export { AuthContext };
-
